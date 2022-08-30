@@ -21,8 +21,13 @@ public class GameTest {
         game.register(player4);
         game.register(player3);
 
-        List<Player> actual = game.players;
-        List<Player> expected = List.of(player1, player2, player4, player3);
+        HashMap<String, Player> actual = game.registeredPlayers;
+        HashMap<String, Player> expected = new HashMap<>() {{
+            put("name1", player1);
+            put("name2", player2);
+            put("name3", player3);
+            put("name4", player4);
+        }};
 
         Assertions.assertEquals(expected, actual);
 
