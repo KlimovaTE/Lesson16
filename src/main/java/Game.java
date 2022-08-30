@@ -1,39 +1,31 @@
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.*;
+import java.util.HashMap;
 
 public class Game {
-    List<Player> players = new ArrayList<>();
+    HashMap<String, Player> registeredPlayers = new HashMap<>();
 
-    public List<Player> register(Player player) {
-        players.add(player);
-        return players;
+    public HashMap register(Player player) {
+        registeredPlayers.put(player.name, player);
+        return registeredPlayers;
     }
 
     public int round(String playerName1, String playerName2) {
-        Player player1 = null;
-        Player player2 = null;
-        for (int i = 0; i < players.size(); i++) {
-            if (players.get(i).name.equals(playerName1)) {
-                player1 = players.get(i);
+        boolean has1 = registeredPlayers.containsKey(playerName1);
+        boolean has2 = registeredPlayers.containsKey(playerName2);
+        if (has1 && has2) {
+            Player player1InRound = registeredPlayers.get(playerName1);
+            Player player2InRound = registeredPlayers.get(playerName2);
+            if (player1InRound.strength > player2InRound.strength) {
+                return 1;
             }
-            if (players.get(i).name.equals(playerName2)) {
-                player2 = players.get(i);
+            if (player1InRound.strength < player2InRound.strength) {
+                return 2;
             }
-        }
-        if (player1 == null || player2 == null) {
+            return 0;
+        } else {
             throw new NotFoundException(
                     "Нельзя сравнивать незарегистрированных игроков"
             );
+
         }
-        if (player1.strength > player2.strength) {
-            return 1;
-        }
-        if (player1.strength < player2.strength) {
-            return 2;
-        }
-        return 0;
     }
 }
